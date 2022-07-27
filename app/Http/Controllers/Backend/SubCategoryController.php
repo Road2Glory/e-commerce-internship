@@ -58,21 +58,40 @@ class SubCategoryController extends Controller
     public function subCategoryUpdate(Request $request){
         $subcat_id = $request->id;
 
-        SubCategory::findOrFail($subcat_id)->update([
-            'category_id' => $request->category_id,
-            'subcategory_name_en' => $request->subcategory_name_en,
-            'subcategory_name_fr' => $request->subcategory_name_fr,
-            'subcategory_slug_en' => strtolower(str_replace(' ','-',$request->subcategory_name_en)),
-            'subcategory_slug_fr' => strtolower(str_replace(' ','-',$request->subcategory_name_fr)),
+    	 SubCategory::findOrFail($subcat_id)->update([
+		'category_id' => $request->category_id,
+		'subcategory_name_en' => $request->subcategory_name_en,
+		'subcategory_name_fr' => $request->subcategory_name_fr,
+		'subcategory_slug_en' => strtolower(str_replace(' ', '-',$request->subcategory_name_en)),
+		'subcategory_slug_fr' => str_replace(' ', '-',$request->subcategory_name_fr),
 
-        ]);
 
+    	]);
+
+	    $notification = array(
+			'message' => 'SubCategory Updated Successfully',
+			'alert-type' => 'info'
+		);
+
+		return redirect()->route('all.subcategory')->with($notification);
+
+    }
+
+    public function subCategoryDelete($id){
+        SubCategory::findOrFail($id)->delete();
         $notification = array(
-            'message' => 'SubCategory Updated Successfully',
+            'message' => 'SubCategory Deleted Successfully',
             'alert-type' => 'info'
         );
 
-        return redirect()->route('all.subcategory')->with($notification);
+        return redirect()->back()->with($notification);
+
+    }
+
+
+    //***************Sub Sub Category */
+
+    public function subSubCategoryView(){
 
     }
 }
