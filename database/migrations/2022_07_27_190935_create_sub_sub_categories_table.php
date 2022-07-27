@@ -14,14 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sub_sub_categories', function (Blueprint $table) {
-            $table->id('category_id');
-            $table->id('subcategory_id');
             $table->id();
-            $table->id();
-            $table->id();
-            $table->id();
-            $table->id();
-            $table->id();
+            $table->integer('category_id');
+            $table->integer('subcategory_id');
+            $table->string('subsubcategory_name_en');
+            $table->string('subsubcategory_name_fr');
+            $table->string('subsubcategory_slug_en');
+            $table->string('subsubcategory_slug_fr');
             $table->timestamps();
         });
     }
