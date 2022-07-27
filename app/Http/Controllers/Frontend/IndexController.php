@@ -42,7 +42,7 @@ class IndexController extends Controller
 
         if($request->file('profile_photo_path')){
             $file = $request->file('profile_photo_path');
-           // unlink(public_path('upload/user_images/'.$data->profile_photo_path));
+            unlink(public_path('upload/user_images/'.$data->profile_photo_path));
             $filename = date('YmdHi').'.'.$file->getClientOriginalExtension();
 
             $file->move(public_path('upload/user_images'),$filename);

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\AdminProfileController;
+use App\Http\Controllers\Backend\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,17 @@ Route::controller(AdminController::class)->group(function (){
 
 });
 
+
+//Brand All route
+Route::prefix('brand')->group(function (){
+    Route::controller(BrandController::class)->group(function (){
+        Route::get('/view','brandView')->name('all.brand');
+        Route::post('/store','brandStore')->name('brand.store');
+
+    });
+
+});
+
 Route::controller(AdminProfileController::class)->group(function (){
     Route::get('/admin/profile','adminProfile')->name('admin.profile');
     Route::get('/admin/profile/edit','adminProfileEdit')->name('admin.profile.edit');
@@ -76,9 +88,6 @@ Route::controller(IndexController::class)->group(function (){
     Route::post('/user/profile/store','userProfileStore')->name('user.profile.store');
     Route::get('/user/change/password','userChangePassword')->name('change.password');
     Route::post('/user/password/update','userPasswordUpdate')->name('user.password.update');
-
-
-
 
 });
 
