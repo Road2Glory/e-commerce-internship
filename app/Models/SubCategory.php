@@ -15,4 +15,8 @@ class SubCategory extends Model
         'subCategory_slug_en',
         'subCategory_slug_fr',
     ];
+
+    public function category(){
+        return $this->belongsTo(Category::class,'category_id','id');
+    }
 }

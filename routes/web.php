@@ -86,10 +86,15 @@ Route::prefix('category')->group(function (){
         Route::post('/sub/store','subCategoryStore')->name('subcategory.store');
         Route::get('/sub/edit/{id}','subCategoryEdit')->name('subcategory.edit');
         Route::post('/sub/update','subCategoryUpdate')->name('subcategory.update');
-        Route::get('/delete/{id}','categoryDelete')->name('category.delete');
+        Route::get('/sub/delete/{id}','subCategoryDelete')->name('subcategory.delete');
+
+        //Admin subsubcategory
+        Route::get('/sub/sub/view','subSubCategoryView')->name('all.subsubcategory');
 
 
     });
+
+
 
 });
 
