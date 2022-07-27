@@ -4,9 +4,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Frontend\IndexController;
-use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\SubCategoryController;
+use App\Http\Controllers\Backend\AdminProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +59,35 @@ Route::prefix('brand')->group(function (){
     Route::controller(BrandController::class)->group(function (){
         Route::get('/view','brandView')->name('all.brand');
         Route::post('/store','brandStore')->name('brand.store');
+        Route::get('/edit/{id}','brandEdit')->name('brand.edit');
+        Route::post('/update','brandUpdate')->name('brand.update');
+        Route::get('/delete/{id}','brandDelete')->name('brand.delete');
+
+
+    });
+
+});
+
+
+//Admin Category routes
+Route::prefix('category')->group(function (){
+    Route::controller(CategoryController::class)->group(function (){
+        Route::get('/view','categoryView')->name('all.category');
+        Route::post('/store','categoryStore')->name('category.store');
+        Route::get('/edit/{id}','categoryEdit')->name('category.edit');
+        Route::post('/update','categoryUpdate')->name('category.update');
+        Route::get('/delete/{id}','categoryDelete')->name('category.delete');
+
+
+    });
+
+    Route::controller(SubCategoryController::class)->group(function (){
+        Route::get('/sub/view','subCategoryView')->name('all.subcategory');
+        Route::post('/sub/store','subCategoryStore')->name('subcategory.store');
+        Route::get('/sub/edit/{id}','subCategoryEdit')->name('subcategory.edit');
+        Route::post('/sub/update','subCategoryUpdate')->name('subcategory.update');
+        Route::get('/delete/{id}','categoryDelete')->name('category.delete');
+
 
     });
 
