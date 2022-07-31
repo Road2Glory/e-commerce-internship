@@ -9,6 +9,8 @@ use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\AdminProfileController;
+use App\Http\Controllers\Backend\ProductController;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,14 +90,28 @@ Route::prefix('category')->group(function (){
         Route::post('/sub/update','subCategoryUpdate')->name('subcategory.update');
         Route::get('/sub/delete/{id}','subCategoryDelete')->name('subcategory.delete');
 
+
         //Admin subsubcategory
         Route::get('/sub/sub/view','subSubCategoryView')->name('all.subsubcategory');
+        Route::get('/subcategory/ajax/{category_id}','getSubCategory');
+        Route::post('/sub/sub/store','subSubCategoryStore')->name('subsubcategory.store');
+        Route::get('/sub/sub/edit/{id}','subSubCategoryEdit')->name('subsubcategory.edit');
+        Route::post('/sub/sub/update','subSubCategoryUpdate')->name('subsubcategory.update');
+        Route::get('/sub/sub/delete/{id}','subSubCategoryDelete')->name('subsubcategory.delete');
 
 
     });
 
 
 
+});
+
+
+//ADmin Products All routes
+Route::prefix('product')->group(function (){
+    Route::controller(ProductController::class)->group(function (){
+        Route::get('/add','addProduct')->name('add-product');
+    });
 });
 
 Route::controller(AdminProfileController::class)->group(function (){
