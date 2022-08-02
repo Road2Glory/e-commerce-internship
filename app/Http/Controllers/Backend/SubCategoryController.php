@@ -92,17 +92,24 @@ class SubCategoryController extends Controller
 
     //***************Sub Sub Category */
 
-    public function subSubCategoryView(){
-        $categories = Category::orderBy('category_name_en','ASC')->get();
-        $subsubcategory =  SubSubCategory::latest()->get();
+    public function SubSubCategoryView(){
 
-      return view('backend.category.sub_subcategory_view',compact('subsubcategory','categories'));
-    }
+ 	$categories = Category::orderBy('category_name_en','ASC')->get();
+    	$subsubcategory = SubSubCategory::latest()->get();
+    	return view('backend.category.sub_subcategory_view',compact('subsubcategory','categories'));
+
+     }
 
     public function getSubCategory($category_id){
         $subcat = SubCategory::where('category_id',$category_id)->orderBy('subcategory_name_en','ASC')->get();
      	return json_encode($subcat);
     }
+
+    // public function GetSubSubCategory($subcategory_id){
+
+    //     $subsubcat = SubSubCategory::where('subcategory_id',$subcategory_id)->orderBy('subsubcategory_name_en','ASC')->get();
+    //     return json_encode($subsubcat);
+    //  }
 
 
     public function subSubCategoryStore(Request $request){
@@ -124,7 +131,7 @@ class SubCategoryController extends Controller
 		'subsubcategory_name_en' => $request->subsubcategory_name_en,
 		'subsubcategory_name_fr' => $request->subsubcategory_name_fr,
 		'subsubcategory_slug_en' => strtolower(str_replace(' ', '-',$request->subsubcategory_name_en)),
-		'subsubcategory_slug_fr' => str_replace(' ', '-',$request->subsubcategory_name_fr),
+		'subsubcategory_slug_fr' => strtolower(str_replace(' ', '-',$request->subsubcategory_name_fr)),
 
 
     	]);
@@ -139,7 +146,7 @@ class SubCategoryController extends Controller
 
 
     public function subSubCategoryEdit($id){
-        $categories = Category::orderBy('category_name_en','ASC')->get();
+       $categories = Category::orderBy('category_name_en','ASC')->get();
     	$subcategories = SubCategory::orderBy('subcategory_name_en','ASC')->get();
     	$subsubcategories = SubSubCategory::findOrFail($id);
     	return view('backend.category.sub_subcategory_edit',compact('categories','subcategories','subsubcategories'));
