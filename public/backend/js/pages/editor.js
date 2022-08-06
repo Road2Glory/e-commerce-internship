@@ -10,7 +10,7 @@
 
     // Replace the <textarea id="editor1"> with a CKEditor
 	// instance, using default configuration.
-	CKEDITOR.replace('editor1')
+	CKEDITOR.replace(jQuery('.ckeditor'));
 	//bootstrap WYSIHTML5 - text editor
 	$('.textarea').wysihtml5();
 
@@ -18,16 +18,18 @@
   });
 
 
-  $(function () {
-    "use strict";
+//   $(function () {
+//     "use strict";
 
-    // Replace the <textarea id="editor1"> with a CKEditor
-	// instance, using default configuration.
-	CKEDITOR.replace('editor2')
-	//bootstrap WYSIHTML5 - text editor
-	$('.textarea').wysihtml5();
+//     // Replace the <textarea id="editor1"> with a CKEditor
+// 	// instance, using default configuration.
+// 	CKEDITOR.replace('editor2')
+// 	//bootstrap WYSIHTML5 - text editor
+// 	$('.textarea').wysihtml5();
 
-  });
+//   });
+
+
 
 
 

@@ -94,6 +94,7 @@ Route::prefix('category')->group(function (){
         //Admin subsubcategory
         Route::get('/sub/sub/view','subSubCategoryView')->name('all.subsubcategory');
         Route::get('/subcategory/ajax/{category_id}','getSubCategory');
+        Route::get('/sub-subcategory/ajax/{subcategory_id}','getSubSubCategory');
         Route::post('/sub/sub/store','subSubCategoryStore')->name('subsubcategory.store');
         Route::get('/sub/sub/edit/{id}','subSubCategoryEdit')->name('subsubcategory.edit');
         Route::post('/sub/sub/update','subSubCategoryUpdate')->name('subsubcategory.update');
@@ -111,6 +112,18 @@ Route::prefix('category')->group(function (){
 Route::prefix('product')->group(function (){
     Route::controller(ProductController::class)->group(function (){
         Route::get('/add','addProduct')->name('add-product');
+        Route::post('/store','storeProduct')->name('product-store');
+        Route::get('/manage','manageProduct')->name('manage-product');
+        Route::get('/edit/{id}','editProduct')->name('product.edit');
+        Route::post('/data/update','productDataUpdate')->name('product-update');
+        Route::post('/image/update','multiImageUpdate')->name('update-product-image');
+        Route::post('/thumbnail/update','thumbnailImageUpdate')->name('update-product-thumbnail');
+        Route::get('/multiimg/delete/{id}','multiImageDelete')->name('product.multiimg.delete');
+        Route::get('/inactive/{id}','productInactive')->name('product.inactive');
+        Route::get('/active/{id}','productActive')->name('product.active');
+
+
+
     });
 });
 
