@@ -42,19 +42,21 @@
                         <tr>
                             <td><img src="{{ asset($item->product_thambnail) }}" style="width: 60px;height:50px;"></td>
                             <td>{{ $item->product_name_en }}</td>
-                            <td>{{ $item->selling_price }}</td>
-                            <td>{{ $item->product_qty }}</td>
+                            <td>${{ $item->selling_price }}</td>
+                            <td>{{ $item->product_qty }} Pic</td>
 
 
                             <td>
                             @if ($item->discount_price == NULL )
                                 <span class="badge badge-pill badge-danger">No Discount</span>
                             @else
-                            @php
-                            $amount = $item->selling_price - $item->discount_price;
-                            $discount = ($amount/$item->selling_price) * 100;
-                            @endphp
-                                <span class="badge badge-pill badge-danger">{{ $discount }}</span>
+                                @php
+                                    //@dd($item->selling_price, $item->discount_price);
+                                    $amount = $item->selling_price - $item->discount_price;
+                                    $discount = ($amount/$item->selling_price) * 100;
+
+                                @endphp
+                                <span class="badge badge-pill badge-danger">{{ round($discount ) }}%</span>
 
                             @endif
 
@@ -73,7 +75,7 @@
                                 <a href="{{ route('product.edit',$item->id) }}" class="btn btn-primary" title="Product Details Data"><i class="fa fa-eye" ></i></a>
 
                               <a href="{{ route('product.edit',$item->id) }}" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil" ></i></a>
-                              <a href="{{ route('category.delete',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i></a>
+                              <a href="{{ route('product.delete',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i></a>
 
 
                               @if ($item->status == 1)

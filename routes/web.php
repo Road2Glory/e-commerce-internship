@@ -4,13 +4,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\AdminProfileController;
-use App\Http\Controllers\Backend\ProductController;
-use PHPUnit\TextUI\XmlConfiguration\Group;
+use App\Http\Controllers\Frontend\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,25 +28,29 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 
 
 
-Route::middleware('admin:admin')->group(function (){
-    Route::get('admin/login',[AdminController::class,'loginForm']);
-    Route::post('admin/login',[AdminController::class,'store'])->name('admin.login');
+Route::group(['prefix'=> 'admin', 'middleware'=>['admin:admin']], function(){
+	Route::get('/login', [AdminController::class, 'loginForm']);
+	Route::post('/login',[AdminController::class, 'store'])->name('admin.login');
 });
 
-Route::middleware(['auth:sanctum,admin',config('jetstream.auth_session'),'verified'
-])->group(function () {
+
+Route::middleware(['auth:admin'])->group(function (){
+
+
+
+Route::middleware(['auth:sanctum,admin',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.index');
     })->name('dashboard')->middleware('auth:admin');
 });
 
 
-Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+// Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
 
 
 //Admin all routes
@@ -51,6 +58,22 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'
 
 Route::controller(AdminController::class)->group(function (){
     Route::get('/admin/logout','destroy')->name('admin.logout')->middleware('auth');
+
+
+});
+
+
+
+Route::controller(AdminProfileController::class)->group(function (){
+    Route::get('/admin/profile','adminProfile')->name('admin.profile');
+    Route::get('/admin/profile/edit','adminProfileEdit')->name('admin.profile.edit');
+    Route::post('/admin/profile/store','adminProfileStore')->name('admin.profile.store');
+    Route::get('/admin/change/password','adminChangePassword')->name('admin.change.password');
+    Route::post('/update/change/password','adminUpdateChangePassword')->name('update.change.password');
+
+
+
+});
 
 
 });
@@ -77,7 +100,7 @@ Route::prefix('category')->group(function (){
         Route::get('/view','categoryView')->name('all.category');
         Route::post('/store','categoryStore')->name('category.store');
         Route::get('/edit/{id}','categoryEdit')->name('category.edit');
-        Route::post('/update','categoryUpdate')->name('category.update');
+        Route::post('/update/{id}','categoryUpdate')->name('category.update');
         Route::get('/delete/{id}','categoryDelete')->name('category.delete');
 
 
@@ -121,22 +144,31 @@ Route::prefix('product')->group(function (){
         Route::get('/multiimg/delete/{id}','multiImageDelete')->name('product.multiimg.delete');
         Route::get('/inactive/{id}','productInactive')->name('product.inactive');
         Route::get('/active/{id}','productActive')->name('product.active');
+        Route::get('/delete/{id}','productDelete')->name('product.delete');
 
 
 
     });
 });
 
-Route::controller(AdminProfileController::class)->group(function (){
-    Route::get('/admin/profile','adminProfile')->name('admin.profile');
-    Route::get('/admin/profile/edit','adminProfileEdit')->name('admin.profile.edit');
-    Route::post('/admin/profile/store','adminProfileStore')->name('admin.profile.store');
-    Route::get('/admin/change/password','adminChangePassword')->name('admin.change.password');
-    Route::post('/update/change/password','adminUpdateChangePassword')->name('update.change.password');
+
+//slider
+Route::prefix('slider')->group(function (){
+    Route::controller(SliderController::class)->group(function (){
+        Route::get('/view','sliderView')->name('manage-slider');
+        Route::post('/store','sliderStore')->name('slider.store');
+        Route::get('/edit/{id}','sliderEdit')->name('slider.edit');
+        Route::post('/update','sliderUpdate')->name('slider.update');
+        Route::get('/delete/{id}','sliderDelete')->name('slider.delete');
+        Route::get('/inactive/{id}','sliderInactive')->name('slider.inactive');
+        Route::get('/active/{id}','sliderActive')->name('slider.active');
 
 
-
+    });
 });
+
+
+
 
 //User All routes
 
@@ -156,6 +188,41 @@ Route::controller(IndexController::class)->group(function (){
 
 });
 
+///////frontEND ALL routes1/////////////
+
+Route::controller(LanguageController::class)->group(function (){
+    Route::get('/language/french','French')->name('french.language');
+    Route::get('/language/english','English')->name('english.language');
+});
+
+// frontend product details page
+Route::controller(IndexController::class)->group(function (){
+    Route::get('/product/details/{id}/{slug}','productDetails');
+    //product tags page
+    Route::get('/product/tag/{tag}','tagWiseProduct');
+    //suubcategory wise data frontend
+
+    Route::get('/subcategory/product/{subcat_id}/{slug}','subCateWiseProduct');
+    //suubsubcategory wise data frontend
+    Route::get('/subsubcategory/product/{subsubcat_id}/{slug}','subSubCateWiseProduct');
+
+    //product view modal with ajax
+    Route::get('/product/view/modal/{id}','productViewAjax');
+});
+
+
+Route::controller(CartController::class)->group(function (){
+    //add to cart store data
+    Route::post('/cart/data/store/{id}','addToCart');
+    //get data from mini cart
+    Route::get('/product/mini/cart/','addMiniCart');
+    //remove data from mini cart
+    Route::get('/minicart/product-remove/{rowId}','removeMiniCart');
+
+   //add to cart store data
+   Route::post('/add-to-wishlist/{product_id}','addToWishlist');
+
+});
 
 
 

@@ -37,13 +37,13 @@
                         @foreach ($brands as $item)
 
                         <tr>
-                            <th>{{ $item->brand_name_eng }}</th>
-                            <th>{{ $item->brand_name_fr }}</th>
-                            <th><img src="{{ asset($item->brand_image) }}" style="width:70px;height:40px;" alt=""></th>
-                            <th>
+                            <td>{{ $item->brand_name_eng }}</td>
+                            <td>{{ $item->brand_name_fr }}</td>
+                            <td><img src="{{ asset($item->brand_image) }}" style="width:70px;height:40px;" alt=""></td>
+                            <td>
                               <a href="{{ route('brand.edit',$item->id) }}" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil" ></i></a>
                               <a href="{{ route('brand.delete',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i></a>
-                            </th>
+                            </td>
 
                         </tr>
                         @endforeach
@@ -69,7 +69,7 @@
 
             <div class="box">
                <div class="box-header with-border">
-                 <h3 class="box-title">Brand List</h3>
+                 <h3 class="box-title">Add Brand</h3>
                </div>
                <!-- /.box-header -->
                <div class="box-body">
