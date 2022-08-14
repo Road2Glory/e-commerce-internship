@@ -1,11 +1,16 @@
 <?php
 
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\User\CartPageController;
+use App\Http\Controllers\User\WishlistController;
+use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\ProductController;
@@ -13,7 +18,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\AdminProfileController;
-use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Backend\ShippingAreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -222,7 +227,96 @@ Route::controller(CartController::class)->group(function (){
    //add to cart store data
    Route::post('/add-to-wishlist/{product_id}','addToWishlist');
 
+
+
 });
+
+
+Route::group(['prefix'=>'user','middleware' => ['user','auth']],function(){
+
+Route::controller(WishlistController::class)->group(function (){
+     //wishlist page
+   Route::get('/wishlist','viewWishlist')->name('wishlist');
+   Route::get('/get-wishlist-product','getWishlistProduct');
+   Route::get('/wishlist-remove/{id}','removeWishlistProduct');
+
+
+
+
+
+});
+
+
+
+});
+
+// My cart page all routes
+Route::controller(CartPageController::class)->group(function (){
+    Route::get('/user/mycart','myCart')->name('mycart');
+    Route::get('/user/get-cart-product','getCartProduct');
+    Route::get('/user/cart-remove/{rowId}','removeCartProduct');
+    Route::get('/cart-increment/{rowId}','cartIncrement');
+    Route::get('/cart-decrement/{rowId}','cartDecrement');
+
+
+
+
+ });
+
+  //ADmin coupons routes
+ Route::prefix('coupons')->group(function (){
+    Route::controller(CouponController::class)->group(function (){
+        Route::get('/view','couponView')->name('manage-coupon');
+        Route::post('/store','couponStore')->name('coupon.store');
+        Route::get('/edit/{id}','couponEdit')->name('coupon.edit');
+        Route::post('/update/{id}','couponUpdate')->name('coupon.update');
+        Route::get('/delete/{id}','couponDelete')->name('coupon.delete');
+
+
+
+
+    });
+});
+
+
+  //ADmin shipping routes
+  Route::prefix('shipping')->group(function (){
+    Route::controller(ShippingAreaController::class)->group(function (){
+        //shipping division
+        Route::get('/division/view','divisionView')->name('manage-division');
+        Route::post('/division/store','divisionStore')->name('division.store');
+        Route::get('/division/edit/{id}','divisionEdit')->name('division.edit');
+        Route::post('/division/update/{id}','divisionUpdate')->name('division.update');
+        Route::get('/division/delete/{id}','divisionDelete')->name('division.delete');
+
+
+        //shipping district
+        Route::get('/district/view','districtView')->name('manage-district');
+        Route::post('/district/store','districtStore')->name('district.store');
+        Route::get('/district/edit/{id}','districtEdit')->name('district.edit');
+         Route::post('/division/update/{id}','districtUpdate')->name('district.update');
+         Route::get('/district/delete/{id}','districtDelete')->name('district.delete');
+
+
+         //shipping state
+        Route::get('/state/view','stateView')->name('manage-state');
+        Route::post('/state/store','stateStore')->name('state.store');
+        Route::get('/state/edit/{id}','stateEdit')->name('state.edit');
+         Route::post('/state/update/{id}','stateUpdate')->name('state.update');
+         Route::get('/state/delete/{id}','stateDelete')->name('state.delete');
+
+
+
+
+
+
+
+    });
+});
+
+
+
+
 
 
 

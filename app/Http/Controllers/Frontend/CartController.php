@@ -85,7 +85,7 @@ class CartController extends Controller
             ]);
            return response()->json(['success' => 'Successfully Added On Your Wishlist']);
 
-            }else{
+             }else{
 
                 return response()->json(['error' => 'This Product has Already on Your Wishlist']);
 
