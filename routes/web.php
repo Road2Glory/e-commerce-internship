@@ -19,6 +19,7 @@ use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\ShippingAreaController;
+use App\Http\Controllers\User\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -227,6 +228,22 @@ Route::controller(CartController::class)->group(function (){
    //add to cart store data
    Route::post('/add-to-wishlist/{product_id}','addToWishlist');
 
+//    ------------------------------------------------------------
+
+//frontend ciupon option
+
+    Route::post('/coupon-apply','couponApply');
+    Route::get('/coupon-calculation','couponCalculation');
+    Route::get(' /coupon-remove','couponRemove');
+
+  //  ------------------------------------------------------
+
+
+     Route::get('/checkout','checkoutCreate')->name('checkout');
+
+
+
+
 
 
 });
@@ -294,7 +311,7 @@ Route::controller(CartPageController::class)->group(function (){
         Route::get('/district/view','districtView')->name('manage-district');
         Route::post('/district/store','districtStore')->name('district.store');
         Route::get('/district/edit/{id}','districtEdit')->name('district.edit');
-         Route::post('/division/update/{id}','districtUpdate')->name('district.update');
+         Route::post('/district/update/{id}','districtUpdate')->name('district.update');
          Route::get('/district/delete/{id}','districtDelete')->name('district.delete');
 
 
@@ -307,12 +324,15 @@ Route::controller(CartPageController::class)->group(function (){
 
 
 
-
-
-
-
     });
 });
+
+Route::controller(CheckoutController::class)->group(function (){
+    Route::get('/district-get/ajax/{division_id}','districtGetAjax');
+    Route::get('/state-get/ajax/{district_id}','stateGetAjax');
+});
+
+
 
 
 
