@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="{{ asset('frontend/assets/css/animate.min.css') }}">
 <link rel="stylesheet" href="{{ asset('frontend/assets/css/rateit.css') }}">
 <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap-select.min.css') }}">
+<link rel="icon" href="{{ asset('frontend/assets/icon.png') }}">
 
 <!-- Icons/Glyphs -->
 <link rel="stylesheet" href="{{ asset('frontend/assets/css/font-awesome.css') }}">
@@ -32,6 +33,7 @@
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="cnt-home" style="background-color: #edf5e1">
 <!-- ============================================== HEADER ============================================== -->
@@ -95,9 +97,9 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+{{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Launch demo modal
-  </button>
+  </button> --}}
 
 {{-- Add to cart Modeal --}}
 
@@ -623,7 +625,10 @@ function cartRemove(id){
         url: "{{ url('/coupon-apply') }}",
         success:function(data){
             couponCalculation();
-            $('#couponField').hide();
+            if (data.validity == true) {
+                $('#couponField').hide();
+            }
+
             // Start Message
             const Toast = Swal.mixin({
                       toast: true,

@@ -45,8 +45,8 @@ Checkout | ShopIn Online Store
 				<div class="col-md-6 col-sm-6 already-registered-login">
 					<h4 class="checkout-subtitle"><b>Shipping Address</b></h4>
 
-            <form class="register-form" role="form">
-
+            <form class="register-form" action="{{ route('checkout.store') }}" method="POST">
+                @csrf
 
 
                 <div class="form-group">
@@ -127,12 +127,12 @@ Checkout | ShopIn Online Store
                     <div class="form-group">
                         <h5><b>State Select</b> <span class="text-danger">*</span></h5>
                         <div class="controls">
-                            <select name="state_id_id" class="form-control" required="" >
+                            <select name="state_id" class="form-control" required="" >
                                 <option value="" selected="" disabled="" >Select State</option>
 
 
                             </select>
-                            @error('state_id_id')
+                            @error('state_id')
                               <span class="text-danger">{{ $message }}</span>
                              @enderror
                        </div>
@@ -148,13 +148,13 @@ Checkout | ShopIn Online Store
 
 
 
-					  <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Login</button>
 
 
 
 
 
-					</form>
+
+
 				</div>
 				<!-- already-registered-login -->
 
@@ -236,6 +236,64 @@ Checkout | ShopIn Online Store
 	</div>
 </div>
 <!-- checkout-progress-sidebar -->				</div>
+
+
+
+
+
+
+
+<div class="col-md-4">
+<!-- checkout-progress-sidebar -->
+            <div class="checkout-progress-sidebar ">
+            <div class="panel-group">
+            <div class="panel panel-default">
+            <div class="panel-heading">
+            <h4 class="unicase-checkout-title">Select Payment Method</h4>
+            </div>
+
+
+            <div class="row">
+
+               <div class="col-md-4">
+                           <label for="">Stripe</label>
+                <input type="radio" name="payment_method" value="stripe">
+                    <img src="{{ asset('frontend/assets/images/payments/4.png') }}">
+               </div>
+
+
+               <div class="col-md-4">
+                <label for="">Card</label>
+                <input type="radio" name="payment_method" value="card">
+                <img src="{{ asset('frontend/assets/images/payments/3.png') }}">
+                </div>
+
+
+            <div class="col-md-4">
+                <label for="">Cash</label>
+                <input type="radio" name="payment_method" value="cash">
+                <img src="{{ asset('frontend/assets/images/payments/6.png') }}">
+            </div>
+
+
+            </div>
+            <hr>
+            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Payment Step</button>
+
+
+            </div>
+            </div>
+            </div>
+<!-- checkout-progress-sidebar -->				</div>
+
+
+
+
+
+
+</form>
+
+
 			</div><!-- /.row -->
 		</div><!-- /.checkout-box -->
 		<!-- ============================================== BRANDS CAROUSEL ============================================== -->
@@ -247,44 +305,44 @@ Checkout | ShopIn Online Store
 
 <script type="text/javascript">
     $(document).ready(function() {
-      $('select[name="division_id"]').on('change', function(){
-          var division_id = $(this).val();
-          if(division_id) {
-              $.ajax({
-                  url: "{{  url('/district-get/ajax') }}/"+division_id,
-                  type:"GET",
-                  dataType:"json",
-                  success:function(data) {
-
-                     var d =$('select[name="district_id"]').empty();
-                        $.each(data, function(key, value){
-                            $('select[name="district_id"]').append('<option value="'+ value.id +'">' + value.district_name + '</option>');
-                        });
-                  },
-              });
-          } else {
-              alert('danger');
-          }
-      });
+        $('select[name="division_id"]').on('change', function(){
+            var division_id = $(this).val();
+            if(division_id) {
+                $.ajax({
+                    url: "{{  url('/district-get/ajax') }}/"+division_id,
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data) {
+                    	$('select[name="state_id"]').empty();
+                       var d =$('select[name="district_id"]').empty();
+                          $.each(data, function(key, value){
+                              $('select[name="district_id"]').append('<option value="'+ value.id +'">' + value.district_name + '</option>');
+                          });
+                    },
+                });
+            } else {
+                alert('danger');
+            }
+        });
 
       $('select[name="district_id"]').on('change', function(){
-          var district_id = $(this).val();
-          if(district_id) {
-              $.ajax({
-                  url: "{{  url('/state-get/ajax') }}/"+district_id,
-                  type:"GET",
-                  dataType:"json",
-                  success:function(data) {
-                     var d =$('select[name="state_id"]').empty();
-                        $.each(data, function(key, value){
-                            $('select[name="state_id"]').append('<option value="'+ value.id +'">' + value.state_name + '</option>');
-                        });
-                  },
-              });
-          } else {
-              alert('danger');
-          }
-      });
+            var district_id = $(this).val();
+            if(district_id) {
+                $.ajax({
+                    url: "{{  url('/state-get/ajax') }}/"+district_id,
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data) {
+                       var d =$('select[name="state_id"]').empty();
+                          $.each(data, function(key, value){
+                              $('select[name="state_id"]').append('<option value="'+ value.id +'">' + value.state_name + '</option>');
+                          });
+                    },
+                });
+            } else {
+                alert('danger');
+            }
+        });
   });
   </script>
 

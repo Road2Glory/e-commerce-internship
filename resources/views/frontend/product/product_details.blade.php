@@ -272,6 +272,12 @@
 
 
 
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_share_toolbox"></div>
+
+
+
+
 
 
 
@@ -309,104 +315,111 @@
 									</div>
 								</div><!-- /.tab-pane -->
 
-								<div id="review" class="tab-pane">
-									<div class="product-tab">
+                        <div id="review" class="tab-pane">
+                            <div class="product-tab">
 
-										<div class="product-reviews">
-											<h4 class="title">Customer Reviews</h4>
+                        <div class="product-reviews">
+                            <h4 class="title">Customer Reviews</h4>
 
-											<div class="reviews">
-												<div class="review">
-													<div class="review-title"><span class="summary">We love this product</span><span class="date"><i class="fa fa-calendar"></i><span>1 days ago</span></span></div>
-													<div class="text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aliquam suscipit."</div>
-																										</div>
+                            @php
+                                $reviews = App\Models\Review::where('product_id',$product->id)->latest()->limit(5)->get();
+                            @endphp
 
-											</div><!-- /.reviews -->
-										</div><!-- /.product-reviews -->
+                            <div class="reviews">
+
+                                @foreach ($reviews as $item)
+
+                                @if($item->status == 0)
+
+                                @else
 
 
 
-										<div class="product-add-review">
-											<h4 class="title">Write your own review</h4>
-											<div class="review-table">
-												<div class="table-responsive">
-													<table class="table">
-														<thead>
-															<tr>
-																<th class="cell-label">&nbsp;</th>
-																<th>1 star</th>
-																<th>2 stars</th>
-																<th>3 stars</th>
-																<th>4 stars</th>
-																<th>5 stars</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td class="cell-label">Quality</td>
-																<td><input type="radio" name="quality" class="radio" value="1"></td>
-																<td><input type="radio" name="quality" class="radio" value="2"></td>
-																<td><input type="radio" name="quality" class="radio" value="3"></td>
-																<td><input type="radio" name="quality" class="radio" value="4"></td>
-																<td><input type="radio" name="quality" class="radio" value="5"></td>
-															</tr>
-															<tr>
-																<td class="cell-label">Price</td>
-																<td><input type="radio" name="quality" class="radio" value="1"></td>
-																<td><input type="radio" name="quality" class="radio" value="2"></td>
-																<td><input type="radio" name="quality" class="radio" value="3"></td>
-																<td><input type="radio" name="quality" class="radio" value="4"></td>
-																<td><input type="radio" name="quality" class="radio" value="5"></td>
-															</tr>
-															<tr>
-																<td class="cell-label">Value</td>
-																<td><input type="radio" name="quality" class="radio" value="1"></td>
-																<td><input type="radio" name="quality" class="radio" value="2"></td>
-																<td><input type="radio" name="quality" class="radio" value="3"></td>
-																<td><input type="radio" name="quality" class="radio" value="4"></td>
-																<td><input type="radio" name="quality" class="radio" value="5"></td>
-															</tr>
-														</tbody>
-													</table><!-- /.table .table-bordered -->
-												</div><!-- /.table-responsive -->
-											</div><!-- /.review-table -->
 
-											<div class="review-form">
-												<div class="form-container">
-													<form role="form" class="cnt-form">
+                                <div class="review">
 
-														<div class="row">
-															<div class="col-sm-6">
-																<div class="form-group">
-																	<label for="exampleInputName">Your Name <span class="astk">*</span></label>
-																	<input type="text" class="form-control txt" id="exampleInputName" placeholder="">
-																</div><!-- /.form-group -->
-																<div class="form-group">
-																	<label for="exampleInputSummary">Summary <span class="astk">*</span></label>
-																	<input type="text" class="form-control txt" id="exampleInputSummary" placeholder="">
-																</div><!-- /.form-group -->
-															</div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img style="border-radius: 50%" src="{{ (!empty($item->user->profile_photo_path))? url('upload/user_images/'.$item->user->profile_photo_path):url('upload/no_image.jpg') }}" width="40px;" height="40px;"><b> {{ $item->user->name }}</b>
+                                        </div>
 
-															<div class="col-md-6">
-																<div class="form-group">
-																	<label for="exampleInputReview">Review <span class="astk">*</span></label>
-																	<textarea class="form-control txt txt-review" id="exampleInputReview" rows="4" placeholder=""></textarea>
-																</div><!-- /.form-group -->
-															</div>
-														</div><!-- /.row -->
+                                        <div class="col-md-3">
 
-														<div class="action text-right">
-															<button class="btn btn-primary btn-upper">SUBMIT REVIEW</button>
-														</div><!-- /.action -->
+                                        </div>
+                                    </div>
 
-													</form><!-- /.cnt-form -->
-												</div><!-- /.form-container -->
-											</div><!-- /.review-form -->
+                                    <div class="review-title"><span class="summary">{{ $item->summary }}</span><span class="date"><i class="fa fa-calendar"></i><span>{{ Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span></span></div>
+                                    <div class="text">"{{ $item->comment }}"</div>
+                                                                                                            </div>
 
-										</div><!-- /.product-add-review -->
+                                                                                                            @endif                                                                    @endforeach
 
-							        </div><!-- /.product-tab -->
-								</div><!-- /.tab-pane -->
+                            </div><!-- /.reviews -->
+                        </div><!-- /.product-reviews -->
+
+
+
+        <div class="product-add-review">
+            <h4 class="title">Write your own review</h4>
+            <div class="review-table">
+
+            </div><!-- /.review-table -->
+
+            <div class="review-form">
+
+
+                @guest
+                <p ><b>For Add Product Review ,You Need to login First <a href="{{ route('login') }}">Login Here</a> </b></p>
+                @else
+
+
+
+
+                <div class="form-container">
+
+
+
+
+                    <form role="form" class="cnt-form" method="post" action="{{ route('review.store') }}">
+                        @csrf
+
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="form-group">
+                                    <label for="exampleInputSummary">Summary <span class="astk">*</span></label>
+                                    <input type="text" class="form-control txt" id="exampleInputSummary" placeholder="" name="summary">
+                                </div><!-- /.form-group -->
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputReview">Review <span class="astk">*</span></label>
+                                    <textarea class="form-control txt txt-review" id="exampleInputReview" rows="4" placeholder="" name="comment"></textarea>
+                                </div><!-- /.form-group -->
+                            </div>
+                        </div><!-- /.row -->
+
+                        <div class="action text-right">
+                            <button type="submit" class="btn btn-primary btn-upper">SUBMIT REVIEW</button>
+                        </div><!-- /.action -->
+
+                    </form><!-- /.cnt-form -->
+
+
+
+
+                </div><!-- /.form-container -->
+
+                @endguest
+            </div><!-- /.review-form -->
+
+        </div><!-- /.product-add-review -->
+
+                            </div><!-- /.product-tab -->
+                        </div><!-- /.tab-pane -->
 
 								<div id="tags" class="tab-pane">
 									<div class="product-tag">
@@ -534,7 +547,7 @@
 			</div><!-- /.home-owl-carousel -->
 </section><!-- /.section --> --}}
 <section class="section featured-product wow fadeInUp">
-	<h3 class="section-title">Releted products</h3>
+	<h3 class="section-title">Related products</h3>
 	<div class="owl-carousel home-owl-carousel upsell-product custom-carousel owl-theme outer-top-xs">
 
 
@@ -624,6 +637,11 @@
 		</div><!-- /.row -->
 
     </div>
+
+
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-62ff7da72aaad9ac"></script>
+
 
 
 @endsection
